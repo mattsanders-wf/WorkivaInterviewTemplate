@@ -1,11 +1,9 @@
 // Related actions
-export const UPDATE_TIME = 'UPDATE_TIME';
-export const TIME_UPDATED = 'TIME_UPDATED';
+export const ADD_MESSAGE = 'ADD_MESSAGE';
 
 // Initial state
 const initialState = {
-  time: new Date().getTime(),
-  timeLoading: false
+  messages: [],
 };
 
 // Selectors for this state
@@ -13,27 +11,18 @@ export const selectors = {
   all(state) {
     return state.home;
   },
-  getCurrentTime(state) {
-    return state.home.time;
-  },
-  isTimeLoading(state) {
-    return state.home.timeLoading;
+  getMessages(state) {
+    return state.home.messages;
   },
 };
 
 // State
 export default (state = initialState, action) => {
   switch (action.type) {
-    case UPDATE_TIME:
+    case ADD_MESSAGE:
       return {
         ...state,
-        timeLoading: true,
-      };
-    case TIME_UPDATED:
-      return {
-        ...state,
-        time: action.time,
-        timeLoading: false
+        messages: [...state.messages, action.message]
       };
     default:
       return state;
@@ -42,18 +31,14 @@ export default (state = initialState, action) => {
 
 // General functions which use dispatch (to dispatch actions) to interact with state
 // NOTE: Thunks normally go in their own directory (containers/redux/thunks)
-export const updateTime = () => {
+export const addMessage = (value) => {
   return (dispatch) => {
-    dispatch({
-      type: UPDATE_TIME
-    });
-
     // Timeout, simulate RPC
     setTimeout(() => {
       dispatch({
-        type: TIME_UPDATED,
-        time: new Date().getTime()
+        type: ADD_MESSAGE,
+        message: value
       });
-    }, 1500);
+    }, 500);
   }
 };
