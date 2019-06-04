@@ -1,9 +1,10 @@
 // Related actions
 export const ADD_MESSAGE = 'ADD_MESSAGE';
+export const CREATE_MESSAGE = 'CREATE_MESSAGE';
 
 // Initial state
 const initialState = {
-  messages: [],
+  messages: []
 };
 
 // Selectors for this state
@@ -13,7 +14,7 @@ export const selectors = {
   },
   getMessages(state) {
     return state.home.messages;
-  },
+  }
 };
 
 // State
@@ -22,7 +23,10 @@ export default (state = initialState, action) => {
     case ADD_MESSAGE:
       return {
         ...state,
-        messages: [...state.messages, action.message]
+        messages: [
+          ...state.messages,
+          { message: action.message, timestamp: Date.now() }
+        ]
       };
     default:
       return state;
@@ -31,8 +35,8 @@ export default (state = initialState, action) => {
 
 // General functions which use dispatch (to dispatch actions) to interact with state
 // NOTE: Thunks normally go in their own directory (containers/redux/thunks)
-export const addMessage = (value) => {
-  return (dispatch) => {
+export const addMessage = value => {
+  return dispatch => {
     // Timeout, simulate RPC
     setTimeout(() => {
       dispatch({
@@ -40,5 +44,5 @@ export const addMessage = (value) => {
         message: value
       });
     }, 500);
-  }
+  };
 };
